@@ -3,6 +3,7 @@ use v5.30;
 use warnings;
 use utf8;
 use feature 'signatures';
+use autodie;
 
 use Mojo::UserAgent;
 use JSON;
@@ -36,7 +37,7 @@ sub grok_wikipedia_annual_page ($url) {
     my @records;
 
     for my $item (@{$section{"大事記"}{"items"}}) {
-        next unless $item =~ m/(?<month>[0-9]+)月(?<mday>[0-9]+)日：(?<body>.+)/s;
+        next unless $item =~ m/(?<month>[0-9]+) 月 (?<mday>[0-9]+) 日 (——|：) (?<body>.+)/sx;
         my $ymd = sprintf('%4d/%02d/%02d', $year, $+{'month'}, $+{'mday'});
         my $body = $+{'body'} =~ s/\p{XPosixCntrl}//gr =~ s/[\n\t]//sgr;
 
@@ -46,16 +47,19 @@ sub grok_wikipedia_annual_page ($url) {
     return \@records;
 }
 
-sub usay ($s) {
-    utf8::encode($s);
-    say $s;
-}
-
 for my $year (1894..2020) {
+    my $output_file = "data/daily-wikipedia-${year}.tsv";
+    next if -f $output_file;
+
+    open my $output_fh, ">:utf8", $output_file;
+
     my $url = 'https://zh.wikipedia.org/wiki/' . $year . '%E5%B9%B4%E8%87%BA%E7%81%A3';
     my $records = eval { grok_wikipedia_annual_page($url) } // [];
 
     for my $it (@$records) {
-        usay join("\t", @$it);
+        say $output_fh join("\t", @$it);
     }
+
+    close($output_fh);
+    say "DONE: $output_file";
 }
