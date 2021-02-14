@@ -47,7 +47,13 @@ sub grok_wikipedia_annual_page ($url) {
     return \@records;
 }
 
-for my $year (1894..2020) {
+my @years = @ARGV;
+
+if (@years == 0) {
+    @years = 1894..2020;
+}
+
+for my $year (@years) {
     my $output_file = "data/daily-wikipedia-${year}.tsv";
     next if -f $output_file;
 
