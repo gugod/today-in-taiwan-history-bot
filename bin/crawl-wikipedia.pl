@@ -37,7 +37,7 @@ sub grok_wikipedia_annual_page ($url) {
     my @records;
 
     for my $item (@{$section{"大事記"}{"items"}}) {
-        next unless $item =~ m/(?<month>[0-9]+) 月 (?<mday>[0-9]+) 日 (——|：) (?<body>.+)/sx;
+        next unless $item =~ m/(?<month>[0-9]+) 月 (?<mday>[0-9]+) 日 (（.月..）)? (——|：) (?<body>.+)/sx;
         my $ymd = sprintf('%4d/%02d/%02d', $year, $+{'month'}, $+{'mday'});
         my $body = $+{'body'} =~ s/\p{XPosixCntrl}//gr =~ s/[\n\t]//sgr;
 
