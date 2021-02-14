@@ -1,6 +1,7 @@
 name: Tweet
 
 on:
+  push:
   schedule:
     - cron: '0 10 * * *'
 
