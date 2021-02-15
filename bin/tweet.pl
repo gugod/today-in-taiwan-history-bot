@@ -72,7 +72,7 @@ sub build_message ($opts) {
     if (@records > 0) {
         my ($ymd, $body) = split /\t/, $records[rand(@records)];
         my ($year, $month, $mday) = split /\//, $ymd;
-        $msg = sprintf('#歷史上的今天 [%d 年 %d 月 %d 日] %s', $year, $month, $mday, $body);
+        $msg = sprintf("#台灣 #歷史上的今天 #%d年%d月%d日\n%s", $year, $month, $mday, $body);
     }
 
     return $msg;
