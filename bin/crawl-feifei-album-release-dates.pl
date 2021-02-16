@@ -19,18 +19,20 @@ my $res = $ua->get('https://ja.wikipedia.org/wiki/%E6%AC%A7%E9%99%BD%E8%8F%B2%E8
 my $dom = $res->dom;
 $dom->find('sup')->map('remove');
 
-my @records = $dom->find('table.wikitable tr')->grep(
-    sub {
-        $_->children("td")->size() == 8;
-    }
-)->map(
+my @records = $dom->find('table.wikitable tr')->map(
     sub ($el) {
-        my $s = $el->at('td:nth-child(2)')->all_text;
+        my @cells = $el->children('td')->each;
+        return unless @cells > 0;
+
+        my $num = $cells[0]->all_text;
+        return unless $num =~ /^[0123456789]+$/;
+
+        my $s = $cells[1]->all_text;
         my ($year, $month, $mday) = comb qr/[0123456789]+/, $s;
         return unless defined($mday);
 
         my $date = sprintf('%4d/%02d/%02d', $year, $month, $mday);
-        my $title = $el->at('td:nth-child(4)')->all_text() =~ s/[\n\t]//grs;
+        my $title = $cells[3]->all_text() =~ s/[\n\t]//grs;
         return [ $date, $title ];
     }
 )->each;
