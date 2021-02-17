@@ -67,8 +67,6 @@ sub build_message ($opts) {
         push @records, grep { /\A${today_re}\t/ } split /\n+/, $path->slurp_utf8;
     }
 
-    @records = grep { length($_) < 100 } @records;
-
     if (@records > 0) {
         my ($ymd, $body) = split /\t/, $records[rand(@records)];
         my ($year, $month, $mday) = split /\//, $ymd;
