@@ -1,4 +1,4 @@
-name: Tweet
+name: Build
 
 on:
   push:
