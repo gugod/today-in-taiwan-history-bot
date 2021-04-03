@@ -11,10 +11,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: release
-    - name: Build + Push the Docker image
+    - name: Build the Docker image
       run: |
         docker build --label org.opencontainers.image.revision=${{github.sha}} --iidfile image.id .
         docker tag    "$(cat image.id)" "ghcr.io/${{github.repository}}:latest"
+    - name: Push the Docker image
+      run: |
         docker login  "ghcr.io" -u ${{github.repository_owner}} --password-stdin <<<"${{secrets.GHCR_TOKEN}}"
         docker push   "ghcr.io/${{github.repository}}:latest"
         docker logout "ghcr.io"
