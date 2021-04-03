@@ -6,8 +6,6 @@ on:
 
 jobs:
   tweet:
-    container:
-      image: perl:5.32
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
