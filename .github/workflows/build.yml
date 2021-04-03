@@ -1,0 +1,22 @@
+name: Tweet
+
+on:
+  push:
+    - release
+
+jobs:
+  tweet:
+    container:
+      image: perl:5.32
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: release
+    - name: Build + Push the Docker image
+      run: |
+        docker build --label org.opencontainers.image.revision=${{github.sha}} --iidfile image.id .
+        docker tag    "$(cat image.id)" "ghcr.io/${{github.repository}}:latest"
+        docker login  "ghcr.io" -u ${{github.repository_owner}} --password-stdin <<<"${{secrets.GHCR_TOKEN}}"
+        docker push   "ghcr.io/${{github.repository}}:latest"
+        docker logout "ghcr.io"
