@@ -10,9 +10,9 @@ jobs:
       image: perl:5.32
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: release
+    - uses: actions/checkout@v2
+      with:
+        ref: release
     - name: Build + Push the Docker image
       run: |
         docker build --label org.opencontainers.image.revision=${{github.sha}} --iidfile image.id .
