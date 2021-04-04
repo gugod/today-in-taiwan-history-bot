@@ -1,9 +1,6 @@
 name: Tweet
 
 on:
-  push:
-    branches:
-      - fun
   schedule:
     - cron: '0 10 * * *'
 
