@@ -7,17 +7,15 @@ on:
 jobs:
   tweet:
     container:
-      image: perl:5.32
+      image: 'docker://ghcr.io/gugod/today-in-taiwan-history-bot:latest'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           ref: release
       - run: date
-      - run: date
         env:
           TZ: Asia/Taipei
-      - run: cpanm -q --notest --no-man-pages --installdeps .
       - name: tweet
         env:
           TWITTER_TOKENS: ${{ secrets.TWITTER_TOKENS }}
