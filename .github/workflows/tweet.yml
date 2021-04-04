@@ -10,7 +10,7 @@ on:
 jobs:
   tweet:
     container:
-      image: ghcr.io/today-in-taiwan-history-bot:latest
+      image: 'docker://ghcr.io/gugod/today-in-taiwan-history-bot:latest'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
