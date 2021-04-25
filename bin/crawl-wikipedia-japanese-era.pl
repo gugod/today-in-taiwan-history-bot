@@ -44,6 +44,12 @@ $dom->find('#mw-content-text h3')->each(
 
 open my $out, ">:utf8", "data/daily-wikipedia-japanese-era.tsv";
 for my $it (@rec) {
-    say $out join("\t", @$it);
+    my $line = join("\t", @$it);
+
+    if ($line =~ /土匪/) {
+        say "Ignored (anonyomus event): $line";
+        next;
+    }
+    say $out $line;
 }
 close($out);
