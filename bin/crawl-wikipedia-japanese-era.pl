@@ -50,6 +50,10 @@ for my $it (@rec) {
         say "Ignored (anonyomus event): $line";
         next;
     }
+    if ($line =~ /討伐/) {
+        say "Ignored (offensive words): $line";
+        next;
+    }
     say $out $line;
 }
 close($out);
