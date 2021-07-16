@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: tweet-today-in-taiwan-history
 spec:
-  schedule: "0 10 * * *"
+  schedule: "0 11 * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 2
   failedJobsHistoryLimit: 2
@@ -21,6 +21,8 @@ spec:
               command:
                 - perl
                 - /app/bin/tweet.pl
+                - '--data'
+                - /app/data
                 - '-c'
                 - /app/secrets/twitter-token.yml
                 - '--yes'
