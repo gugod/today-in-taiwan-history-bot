@@ -110,7 +110,7 @@ sub maybe_tweet_update ($opts, $msg) {
         );
 
         my $r = $twitter->update($msg);
-        say "https://twitter.com/jabbot/status/" . $r->{id_str};
+        say "https://twitter.com/" . $r->{"user"}{"screen_name"} . "/status/" . $r->{id_str};
     } else {
         say "#=> Not tweeting";
     }
